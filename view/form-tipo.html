@@ -1,0 +1,152 @@
+<?php
+// Conexão com o banco de dados
+$conn = mysqli_connect('localhost', 'root', '', 'dbtestepratico');
+
+// Verifica se a conexão foi estabelecida com sucesso
+if (!$conn) {
+    die("A conexão com o banco de dados falhou: " . mysqli_connect_error());
+}
+session_start();
+
+if(isset($_POST['cadastrar'])){
+    $user_FName = $_POST['NomeComp'];
+    $username = $_POST['usuario'];
+    $user_email = $_POST['email'];
+    $user_pass = $_POST['senha'];
+    cadastrar();
+}
+function cadastrar(){
+   global $conn, $user_FName, $user_email;
+    $sql_f = "SELECT * FROM users WHERE Nome_Completo = '$user_FName'";
+    $res_f = mysqli_query($conn, $sql_f);
+
+    $sql_e = "SELECT * FROM users WHERE user_email = '$user_email'";
+    $res_e = mysqli_query($conn, $sql_e);
+
+    if(mysqli_num_rows($res_f)> 0){
+        while (mysqli_fetch_assoc($res_f)){
+            echo 'FULLNAME EXISTE';
+        }
+    } else if(mysqli_num_rows($res_e) > 0){
+        while(mysqli_fetch_assoc($res_e)){
+            echo 'EMAIL EXISTE';
+        }
+    } else{
+        $query = "INSERT INTO users(Nome_Completo, Email_User, senha) VALUE ('$user_FName', '$user_email', '$user_pass')";
+        $result = mysqli_query($conn, $query);
+
+        if(!$result){
+            die("FALHA NA QUERY". mysqli_error($conn));
+        }else{
+            echo "Registrado com sucesso";
+        }
+    }
+}
+
+$query = "SELECT * FROM users";
+$result = mysqli_query($conn, $query);
+
+// Cria um array para armazenar os dados
+$data = array();
+
+// Itera sobre os resultados da consulta e adiciona cada linha ao array
+while ($row = mysqli_fetch_assoc($result)) {
+    $id = $row['id'];
+    $nome = $row['Nome_Completo'];
+    $usuario = $row['usuario'];
+    $email = $row['Email_User'];
+    $telefone = $row['Tel_User'];
+    $status = $row['status_user'];
+    $acoes =  '<button id="${data}" onclick="editarDados('.$row['id'].') class="btn btn-info btn-sm btn-view"><i class="fas fa-eye"></i></button>
+    <button id="${data}"  class="btn btn-primary  btn-sm btn-edit"><i class="fas fa-edit"></i></button>
+    <button id="${data}" class="btn btn-danger btn-sm btn-delete"><i class="fas fa-trash-alt"></i></button>';
+    $data[] = array($nome, $usuario, $email, $telefone, $status, $acoes);
+}
+
+// Função para visualizar dados
+function visualizarDados($id) {
+    global $conn;
+    $query = "SELECT * FROM users WHERE id = $id";
+    $result = mysqli_query($conn, $query);
+    $row = mysqli_fetch_assoc($result);
+    echo "<div id='modal-visualizar' class='modal-content'>";
+    echo "<p>Nome completo: " . $row['Nome_Completo'] . "</p>";
+    echo "<p>Usuario: " . $row['usuario'] . "</p>";
+    echo "<p>Email: " . $row['Email_User'] . "</p>";
+    echo "<p>Telefone: " . $row['Tel_User']. "</p>";
+    echo "<p>Status: " . $row['status_user'] . "</p>";
+    echo "</div>";
+}
+
+// Função para editar dados
+function editarDados($id) {
+    global $conn;
+    $query = "SELECT * FROM users WHERE id = $id";
+    $result = mysqli_query($conn, $query);
+    $row = mysqli_fetch_assoc($result);
+    echo "<div id='modal-editar' class='modal-content'>";
+    echo "<form action='editar.php' method='post'>";
+    echo "<input type='hidden' name='id' value='" . $row['id'] . "'>";
+    echo "<label for='nome'>Nome completo:</label>";
+    echo "<input type='text' id='nome' name='nome' value='" .$row['Nome_Completo'] . "'>";
+    echo "<label for='usuario'>Usuario:</label>";
+    echo "<input type='text' id='usuario' name='usuario' value='" . $row['usuario'] . "'>";
+    echo "<label for='email'>Email:</label>";
+    echo "<input type='email' id='email' name='email' value='" . $row['Email_User'] . "'>";
+    echo "<label for='telefone'>Telefone:</label>";
+    echo "<input type='text' id='telefone' name='telefone' value='" . $row['Tel_User'] . "'>";
+    echo "<label for='status'>Status:</label>";
+    echo "<input type='text' id='status' name='status' value='" . $row['status_user'] . "'>";
+    echo "<input type='submit' value='Salvar'>";
+    echo "</form>";
+    echo "</div>";
+}
+
+// Fecha a conexão com o banco de dados
+mysqli_close($conn);
+
+// Converte o array para o formato JSON
+$json_data = json_encode($data);
+
+?>
+
+<html>
+<head>
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.21/css/jquery.dataTables.min.css">
+    <link rel="stylesheet" href="../libs/fontAwesome/css/all.css">
+    <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+    <script src="https://cdn.datatables.net/1.10.21/js/jquery.dataTables.min.js"></script>
+    <script src="../controller/validacao.js"></script>
+
+
+    <script>
+        $(document).ready(function() {
+            $('#tabela').DataTable( {
+                data: <?php echo $json_data; ?>,
+                columns: [
+                    { title: "Nome completo" },
+                    { title: "Usuario" },
+                    { title: "Email" },
+                    { title: "Telefone" },
+                    { title: "Status" },
+                    { title: "Ações" }
+                ]
+            } );
+        } );
+    </script>
+</head>
+<body class="text-center">
+<h2 class='mb-3'>Listagem de Usuarios</h2>
+<table id="tabela" class="table" width="100%" class="text-center">
+  <thead>
+    <tr>
+      </th>
+    </tr>
+  </thead>
+  <tbody>
+    </tbody>
+</table>
+</body>
+</html>
+</body>
+</html>
