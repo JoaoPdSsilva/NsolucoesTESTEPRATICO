@@ -13,6 +13,7 @@
     <script src="https://cdn.datatables.net/1.10.21/js/jquery.dataTables.min.js"></script>
     <script src="../controller/validacao.js"></script>
     <script src="../controller/modal.js"></script>
+    <script src="../controller/cadastrar.js"></script>
     <script src="../libs/bootstrap.min.js"></script>
     <link rel="stylesheet" href="../model/login.css">
 <script>
@@ -162,38 +163,57 @@ function validaCPF(cpf) {
       <div class="modal-header">
 
       <div class="modal-body">
-    <form action="cadastrar.php" method="POST">
-
+    <form id="cadastrar" action="cadastrar.php" method="POST">
+              
+    <div class="mb-3">
       <label for="nomeCompleto">Nome Completo:</label>
-      <input type="text" id="nomeCompletoCad" name="nomeCompleto" required><br>
-
+      <input type="text" id="nomeCompletoCad" name="nomeCompletoCad" required><br>
+    </div>
+    <div class="mb-3">
       <label for="usuario">Usuário:</label>
-      <input type="text" id="usuarioCad" name="usuario" required><br>
-
+      <input type="text" id="usuarioCad" name="usuario" required><br>        
+      </div>
+      <div class="mb-3">
       <label for="emailCads">E-mail:</label>
       <input type="email" id="emailCads" name="emailCads" required><br>
-
+      </div>
+      <div class="mb-3">
+      <label for="senha">Senha:</label>
+      <input type="password" id="senhaCad" name="senhaCad" required><br>
+      </div>
+      <div class="mb-3">
       <label for="telefone">Telefone:</label>
       <input type="tel" id="telefoneCad" name="telefone" required><br>
-
+</div>
+<div class="mb-3">
+      <label for="cpf">CPF:</label>
+      <input type="number" id="cpfCad" name="cpfCad" required><br>
+      </div>
+<div class="mb-3">
       <label for="cep">CEP:</label>
       <input type="number" id="cepCad" name="cep" required><br>
-
-      <label for="endereco">Endereço:</label>
-      <input type="text" id="enderecoCad" name="endereco" required><br>
-
+      </div>
+      <div class="mb-3">
+      <label for="enderecoCad">Endereço:</label>
+      <input type="text" id="enderecCad" name="enderecCad" required><br>
+      </div>
+      <div class="mb-3">
       <label for="numero">Número:</label>
       <input type="number" id="numeroCad" name="numero" required><br>
-
+      </div>
+      <div class="mb-3">
       <label for="complemento">Complemento:</label>
-      <input type="text" id="complementoCad" name="complemento" required><br>
-
+      <input type="text" id="complementoCad" name="complemento"><br>
+      </div>
+      <div class="mb-3">
       <label for="bairro">Bairro:</label>
       <input type="text" id="bairroCad" name="bairro" required><br>
-
+      </div>
+      <div class="mb-3">
       <label for="cidade">Cidade:</label>
       <input type="text" id="cidadeCad" name="cidade" required><br>
-
+      </div>
+      <div class="mb-3">
       <label for="estado">Estado:</label>
       <select id="estadocad" name="estadocad">
     <option value="null" select>Escolha um Estado</option>
@@ -226,22 +246,19 @@ function validaCPF(cpf) {
     <option value="TO">Tocantins</option>
     <option value="EX">Estrangeiro</option>
 </select>
-      <label for="cpf">CPF:</label>
-      <input type="number" id="cpfCad" name="cpf" required><br>
-
-      <label for="senha">Senha:</label>
-      <input type="password" id="senhaCad" name="senha" required><br>
-
+</div>
+      <div class="mb-3">
       <label for="status">Status:</label>
       <select id="status" name="status"><br>
         <option value="Atv" selected>Ativado</option>
        <option value="Dtv">Desativado</option>
-       <br>
-       <br>
-
-      <Input type="submit" id="submit" class="btn btnCadastro btn-primary"  value="Cadastrar" data-dismiss="modal"></input>
+              </select>
+       </div>
+       <div class="mb-3">
+      <input type="submit" id="submit" class="btn btnCadastro btn-primary"  value="Cadastrar"></input>
       <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
-
+      </div>
+      
       </form>
   </div>
 </div>
