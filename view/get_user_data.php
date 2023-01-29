@@ -31,7 +31,7 @@
         echo "<tr><th>usuario</th><td>".$user['$usuario']."</td></tr>";
         echo "<tr><th>status_user</th><td>".$user['$status_user']."</td></tr>";
         echo "<tr><th>id</th><td>".$user['$id']."</td></tr>";
-        echo "<tr><th>senha</th><td>".$user['senha']."</td></tr>";
+        echo "<tr><th>senha</th><td>".$user['$senha']."</td></tr>";
         echo "</table>";
     } else {
         echo "Nenhum usuário";

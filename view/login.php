@@ -24,7 +24,7 @@ if (isset($_POST['submit'])) {
 
         // Armazena o nome de usuário e o ID do usuário na sessão
         $row = mysqli_fetch_array($result);
-        $_SESSION['username'] = $row['usuario'];
+        $_SESSION['usuario'] = $row['usuario'];
         $_SESSION['user_id'] = $row['id'];
 
         // Redireciona o usuário para a página protegida

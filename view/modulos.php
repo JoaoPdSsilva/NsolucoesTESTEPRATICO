@@ -55,6 +55,7 @@ function validaCPF(cpf) {
 
 
     <button type="button" class="btn btn-outline-success" data-toggle="modal" data-target="#modalCadastro">Cadastrar</button>
+    <a type="button" class="btn btn-outline-danger" data-toggle="modal" href="logout.php">Sair</a>
 </div>
 </div>
 <br>
@@ -63,6 +64,7 @@ function validaCPF(cpf) {
 
         <thead>
         <tr>
+    <th class="th-sm">#</th>
     <th class="th-sm">Nome Completo</th>
     <th class="th-sm">Usuário</th>
     <th class="th-sm">Email</th>
@@ -76,18 +78,18 @@ function validaCPF(cpf) {
                 // Conexão com o banco de dados
                 $conn = new mysqli('localhost', 'root', '', 'dbtestepratico');
 
-                $query = "SELECT id, Nome_Completo, usuario, Email_User, Tel_User, status_user FROM users";
+                $query = "SELECT * FROM users ORDER BY id DESC";
                 $result = $conn->query($query);
-                while ($row = $result->fetch_assoc()) {
+                while ($row = mysqli_fetch_assoc($result)) {
                     echo '<tr>';
-                     $row['id'];
+                    echo '<td>' . $row['id'] . '</td>;';
                     echo '<td>' . $row['Nome_Completo'] . '</td>';
                     echo '<td>' . $row['usuario'] . '</td>';
                     echo '<td>' . $row['Email_User'] . '</td>';
                     echo '<td>' . $row['Tel_User'] . '</td>';
                     echo '<td>' . $row['status_user'] . '</td>';
                     echo '<td>';
-                    echo '<a  id="editar" class="editar data-toggle="modal" data-target="#modalEdit" class="edit" data-id="' . $row['id'] . '"><i class="fa fa-edit"></i></a>';
+                    echo '<a  id="editar" href="edit.php?id=$row[id]" "class="editar data-toggle="modal" data-target="#modalEdit" class="edit" data-id="' . $row['id'] . '"><i class="fa fa-edit"></i></a>';
                     echo '<a  id="visualizar" class="visualizar" data-toggle="modal" data-target="#modalView" class="view" data-id="' . $row['id'] . '"><i class="fa fa-eye"></i></a>';
                     echo '<a  id="apagar" class="apagar" data-toggle="modal" data-target="#modalDelete" class="delete" data-id="' . $row['id'] . '"><i class="fa fa-trash"></i></a>';
                     echo '</td>';
@@ -99,95 +101,7 @@ function validaCPF(cpf) {
         </tbody>
     </table>
     
-                <!-- Modal de Editar -->
-<div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="modalEditarLabel" aria-hidden="true">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="modalEditarLabel">Editar Registro</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-
-      </div>
-      <div class="modal-body" id="edit-modal-body">
-      <div class="modal-body" id="view-modal-body">
-
-    <form action="get_user_data.php" method="GET">
-      <label for="nomeCompletoView">Nome Completo:</label>
-    <input type="text" id="nomeCompletoView" ></input>
-
-    <label for="usuarioView">Usuário:</label>
-    <input type="text" id="usuarioView" ></input>
-
-    <label for="emailView">E-mail:</label>
-    <input  type="email" id="email" ></input>
-
-    <label for="telefoneView">Telefone:</label>
-    <input type="number" id="telefoneView" ></input>
-
-    <label for="cepView">CEP:</label>
-    <input type="number" id="cepView" ></input>
-
-    <label for="enderecoView">Endereço:</label>
-    <input type="text" id="enderecoView"  ></input>
-
-    <label for="numeroView">Número:</label>
-    <input type="number" id="numeroView"  ></input>
-
-    <label for="complementoView">Complemento:</label>
-    <input type="text" id="complementoView" ></input>
-
-    <label for="bairroView">Bairro:</label>
-    <input type="text" id="bairroView" ></input>
-
-    <label for="cidadeView">Cidade:</label>
-    <input type="text" id="cidadeView" ></input>
-
-    <label for="estadoView">Estado:</label>
-    <select id="estado" name="estado" >
-    <option value="AC">Acre</option>
-    <option value="AL">Alagoas</option>
-    <option value="AP">Amapá</option>
-    <option value="AM">Amazonas</option>
-    <option value="BA">Bahia</option>
-    <option value="CE">Ceará</option>
-    <option value="DF">Distrito Federal</option>
-    <option value="ES">Espírito Santo</option>
-    <option value="GO">Goiás</option>
-    <option value="MA">Maranhão</option>
-    <option value="MT">Mato Grosso</option>
-    <option value="MS">Mato Grosso do Sul</option>
-    <option value="MG">Minas Gerais</option>
-    <option value="PA">Pará</option>
-    <option value="PB">Paraíba</option>
-    <option value="PR">Paraná</option>
-    <option value="PE">Pernambuco</option>
-    <option value="PI">Piauí</option>
-    <option value="RJ">Rio de Janeiro</option>
-    <option value="RN">Rio Grande do Norte</option>
-    <option value="RS">Rio Grande do Sul</option>
-    <option value="RO">Rondônia</option>
-    <option value="RR">Roraima</option>
-    <option value="SC">Santa Catarina</option>
-    <option value="SP">São Paulo</option>
-    <option value="SE">Sergipe</option>
-    <option value="TO">Tocantins</option>
-    <option value="EX">Estrangeiro</option>
-</select>
-
-    <label for="cpfView">CPF:</label>
-    <input type="number" id="cpf" ></input>
-    </div>      
-  </div>
-      <div class="modal-footer">
-        <button type="submit" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
-        <button type="submit" class="btn btn-primary" id="salvarEdicao">Salvar Alterações</button>
-      </div>
-    </div>
-  </div>
-</div>  
-</form>            
+           
 
 
 <!-- Modal de Visualizar -->
@@ -195,7 +109,6 @@ function validaCPF(cpf) {
   <div class="modal-dialog">
     <div class="modal-content">
 
-      <!-- Modal Header -->
       <div class="modal-header">
         <h4 class="modal-title">Informações</h4>
         <button type="button" class="close" data-dismiss="modal">&times;</button>
@@ -203,18 +116,7 @@ function validaCPF(cpf) {
 
       <!-- Modal body -->
       <div class="modal-body">
-        <p>Nome Completo:  </p>
-        <p>Usuário:  </p>
-        <p>E-mail:  </p>
-        <p>Telefone:  </p>
-        <p>CEP:  </p>
-        <p>Endereço:  </p>
-        <p>Número:  </p>
-          <p>Complemento: </p>
-          <p>Bairro:  </p>
-          <p>Cidade:  </p>
-        <p>Estado:  </p>
-        <p>CPF:  </p>
+
 
       </div>
 
@@ -253,7 +155,6 @@ function validaCPF(cpf) {
 </div>
                 
    <!-- Modal de Cadastrar -->
-
 <div class="modal fade" id="modalCadastro">
   
     <div class="modal-dialog" role="document">
@@ -261,7 +162,7 @@ function validaCPF(cpf) {
       <div class="modal-header">
 
       <div class="modal-body">
-    <form action="" method="POST">
+    <form action="cadastrar.php" method="POST">
 
       <label for="nomeCompleto">Nome Completo:</label>
       <input type="text" id="nomeCompletoCad" name="nomeCompleto" required><br>
@@ -294,8 +195,37 @@ function validaCPF(cpf) {
       <input type="text" id="cidadeCad" name="cidade" required><br>
 
       <label for="estado">Estado:</label>
-      <input type="text" id="estadoCad" name="estado" required><br>
-
+      <select id="estadocad" name="estadocad">
+    <option value="null" select>Escolha um Estado</option>
+    <option value="AC">Acre</option>
+    <option value="AL">Alagoas</option>
+    <option value="AP">Amapá</option>
+    <option value="AM">Amazonas</option>
+    <option value="BA">Bahia</option>
+    <option value="CE">Ceará</option>
+    <option value="DF">Distrito Federal</option>
+    <option value="ES">Espírito Santo</option>
+    <option value="GO">Goiás</option>
+    <option value="MA">Maranhão</option>
+    <option value="MT">Mato Grosso</option>
+    <option value="MS">Mato Grosso do Sul</option>
+    <option value="MG">Minas Gerais</option>
+    <option value="PA">Pará</option>
+    <option value="PB">Paraíba</option>
+    <option value="PR">Paraná</option>
+    <option value="PE">Pernambuco</option>
+    <option value="PI">Piauí</option>
+    <option value="RJ">Rio de Janeiro</option>
+    <option value="RN">Rio Grande do Norte</option>
+    <option value="RS">Rio Grande do Sul</option>
+    <option value="RO">Rondônia</option>
+    <option value="RR">Roraima</option>
+    <option value="SC">Santa Catarina</option>
+    <option value="SP">São Paulo</option>
+    <option value="SE">Sergipe</option>
+    <option value="TO">Tocantins</option>
+    <option value="EX">Estrangeiro</option>
+</select>
       <label for="cpf">CPF:</label>
       <input type="number" id="cpfCad" name="cpf" required><br>
 
@@ -309,14 +239,15 @@ function validaCPF(cpf) {
        <br>
        <br>
 
-      <Input type="button" id="btnCadastro" class="btn btnCadastro btn-primary"  value="Cadastrar" data-dismiss="modal"></input>
+      <Input type="submit" id="submit" class="btn btnCadastro btn-primary"  value="Cadastrar" data-dismiss="modal"></input>
       <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
 
-    </form>
+      </form>
   </div>
 </div>
  </div>
 </div>
+
 
 </body>
 </html>

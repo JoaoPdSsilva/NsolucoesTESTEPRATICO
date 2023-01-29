@@ -1,7 +1,6 @@
 <?php
 
-// Incluir a conexao com o banco de dados
-include_once '../controller/conn.php';
+$conn = new mysqli('localhost', 'root', '', 'dbtestepratico');
 
 //Receber os dados da requisão
 $dados_requisicao = $_REQUEST;
